@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
 import "./App.css";
-import LoginButton from "./components/LoginButton";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <LoginButton />
-    </div>
+    <Router>
+      <Routes>
+        {/* Route for the Login Page */}
+        <Route path="/" element={<LoginPage />} />
+
+        {/* Route for the Profile Page */}
+        <Route path="/profile" element={<ProfilePage />} />
+      </Routes>
+    </Router>
   );
 }
 

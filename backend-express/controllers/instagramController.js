@@ -30,7 +30,9 @@ export const handleRedirect = async (req, res) => {
     );
 
     const { access_token, user_id } = tokenRes.data;
-    res.json({ access_token, user_id });
+    
+    // Send the access token and user_id back to the frontend
+    res.redirect(`http://localhost:5173/profile?access_token=${access_token}&user_id=${user_id}`);
   } catch (err) {
     console.error('❌ Error exchanging code for token:', err.response?.data || err.message);
     res.status(500).send('Error getting access token');
