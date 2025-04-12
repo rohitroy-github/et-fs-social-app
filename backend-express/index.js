@@ -18,7 +18,7 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse incoming JSON requests
 
 app.get("/", (req, res) => {
-  res.send("et-fs-social-app server endpoint is touched ✅");
+  res.send("et-fs-social-app server endpoint has been reached ✅");
 });
 
 app.use("/auth", authRoutes);
