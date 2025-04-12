@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 export const redirectToInstagram = (req, res) => {
-  const url = `https://www.instagram.com/oauth/authorize?client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&scope=instagram_basic,instagram_manage_comments,instagram_manage_insights,instagram_content_publish&response_type=code`;
+  const url = `https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=${process.env.INSTAGRAM_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights`;
   res.redirect(url);
 };
+
 
 export const handleRedirect = async (req, res) => {
   const code = req.query.code;
