@@ -1,0 +1,46 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# dotenv environment variables
+.env
+.env.local
+.env.*.local
+
+# Vite
+dist/
+.vite/
+
+# Vercel
+.vercel/
+output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Optional: Ignore build artifacts (if using TypeScript or Babel)
+build/
+*.tsbuildinfo
+
+# Mac specific
+.AppleDouble
+.LSOverride
+
+# OneDrive and temp
+~$*
+*.tmp
+*.swp
+*.swo
+
+# Rohit's files
+readMeRohit
