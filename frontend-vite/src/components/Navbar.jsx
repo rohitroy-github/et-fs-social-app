@@ -19,11 +19,14 @@ const Navbar = () => {
   // If username is not available, show login button
   if (!username) {
     return (
-      <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-600 shadow-lg px-6 py-4 flex justify-between items-center font-montserrat z-50">
-        <h1 className="text-xl font-bold text-white">Meta Instagram App</h1>
+      <div className="w-full bg-white shadow-lg px-6 py-4 flex justify-between items-center font-montserrat z-50 relative">
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-600 opacity-30 z-0"></div>
+
+        <h1 className="text-xl font-bold text-black z-10">Meta Instagram App</h1>
         <Link
           to="/"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full transition font-semibold"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full transition font-semibold z-10"
         >
           Login with Instagram
         </Link>
@@ -32,15 +35,18 @@ const Navbar = () => {
   }
 
   return (
-    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-600 shadow-lg px-6 py-4 flex justify-between items-center font-montserrat z-50">
-      <h1 className="text-xl font-bold text-white">Meta Instagram App</h1>
-      <div className="flex items-center gap-4">
-        <p className="text-sm text-white">
+    <div className="w-full bg-white shadow-lg px-6 py-4 flex justify-between items-center font-montserrat z-50 relative">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-600 opacity-30 z-0"></div>
+
+      <h1 className="text-xl font-bold text-black z-10">Meta Instagram App</h1>
+      <div className="flex items-center gap-4 z-10">
+        <p className="text-sm text-black">
           <span className="font-semibold">Username:</span> @{username}
         </p>
         <button
           onClick={handleLogout}
-          className="text-sm text-red-200 hover:text-red-300 transition"
+          className="text-sm text-red-500 hover:text-red-700 transition z-10"
         >
           Logout
         </button>
