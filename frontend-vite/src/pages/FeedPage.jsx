@@ -81,7 +81,7 @@ const FeedPage = () => {
 
   return (
     <div className="min-h-screen p-8 font-montserrat relative">
-      <h1 className="text-3xl font-bold text-center mb-8">Your Feed</h1>
+      <h1 className="text-3xl font-bold text-center mb-8 text-white">Your Feed</h1>
 
       {posts.length === 0 ? (
         <div className="text-center">No posts found.</div>
