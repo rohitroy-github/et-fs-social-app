@@ -26,12 +26,12 @@ const PostModal = ({ media, onClose }) => {
   useEffect(() => {
     const fetchComments = async () => {
       const accessToken = sessionStorage.getItem("access_token");
-
+    
       if (!accessToken) return;
-
+    
       try {
         const res = await fetch(
-          `https://graph.instagram.com/v22.0/${currentItem.id}?fields=id,timestamp,username,like_count&access_token=${accessToken}`
+          `https://graph.instagram.com/${currentItem.id}/comments&access_token=${accessToken}`
         );
         const data = await res.json();
         console.log("Fetched Comments:", data);
@@ -42,6 +42,7 @@ const PostModal = ({ media, onClose }) => {
         setLoadingComments(false);
       }
     };
+    
 
     fetchComments();
   }, [currentItem.id]);

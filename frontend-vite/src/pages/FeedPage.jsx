@@ -56,6 +56,7 @@ const FeedPage = () => {
         
 
         const allPosts = await Promise.all(mediaDetailsPromises);
+        console.log(allPosts);
         setPosts(allPosts);
         setLoading(false);
       } catch (err) {
