@@ -1,29 +1,29 @@
-// src/pages/FeedPage.jsx
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 const FeedPage = () => {
-  const [posts, setPosts] = useState([]);
+  const location = useLocation();
+  const { username } = useParams();
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const fetchFeed = async () => {
-      const token = localStorage.getItem("access_token");
-      const res = await axios.get("/api/feed", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setPosts(res.data);
-    };
-    fetchFeed();
-  }, []);
+    if (location.state?.userId) {
+      setUserId(location.state.userId);
+    } else {
+      // fallback if userId is lost (optional)
+      const storedId = sessionStorage.getItem("insta_id");
+      if (storedId) setUserId(storedId);
+    }
+  }, [location.state]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {posts.map((post) => (
-        <div key={post.id} className="bg-white rounded shadow p-2">
-          <img src={post.media_url} alt="Post" className="rounded" />
-          <p>{post.caption}</p>
-        </div>
-      ))}
+    <div className="min-h-screen flex flex-col items-center justify-center font-montserrat">
+      <h1 className="text-3xl font-bold mb-4">Feed for @{username}</h1>
+      {userId ? (
+        <p className="text-gray-600">User ID: {userId}</p>
+      ) : (
+        <p className="text-red-500">User ID not found</p>
+      )}
     </div>
   );
 };

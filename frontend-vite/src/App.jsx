@@ -1,18 +1,20 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import FeedPage from "./pages/FeedPage";
+import Layout from "./components/Layout";
 import "./App.css";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Route for the Login Page */}
-        <Route path="/" element={<LoginPage />} />
-
-        {/* Route for the Profile Page */}
-        <Route path="/profile" element={<ProfilePage />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/:username/feed" element={<FeedPage />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 }
