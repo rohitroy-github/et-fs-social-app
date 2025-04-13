@@ -41,7 +41,7 @@ const ProfilePage = () => {
   if (!accessToken || !userId || !username)
     return (
       <div className="text-center mt-20 text-xl font-montserrat">
-        Loading...
+        Loading... 
       </div>
     );
 
