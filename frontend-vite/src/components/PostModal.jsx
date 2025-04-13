@@ -31,7 +31,7 @@ const PostModal = ({ media, onClose }) => {
     
       try {
         const res = await fetch(
-          `https://graph.instagram.com/${currentItem.id}/comments&access_token=${accessToken}`
+          `https://graph.instagram.com/${currentItem.id}/comments?fields=id,text,timestamp,username,like_count&access_token=${accessToken}`
         );
         const data = await res.json();
         console.log("Fetched Comments:", data);
