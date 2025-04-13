@@ -24,11 +24,36 @@ const FeedPage = () => {
         const mediaData = await mediaRes.json();
 
         const mediaDetailsPromises = mediaData.data.map(async (media) => {
-          const mediaRes = await fetch(
-            `https://graph.instagram.com/v22.0/${media.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
+          const baseRes = await fetch(
+            `https://graph.instagram.com/${media.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
           );
-          return await mediaRes.json();
+          const baseMedia = await baseRes.json();
+        
+          // If it's a carousel, fetch children
+          if (baseMedia.media_type === "CAROUSEL_ALBUM") {
+            const childrenRes = await fetch(
+              `https://graph.instagram.com/${media.id}/children?access_token=${accessToken}`
+            );
+            const childrenData = await childrenRes.json();
+        
+            const childDetails = await Promise.all(
+              childrenData.data.map(async (child) => {
+                const childRes = await fetch(
+                  `https://graph.instagram.com/${child.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
+                );
+                return await childRes.json();
+              })
+            );
+        
+            return {
+              ...baseMedia,
+              children: childDetails,
+            };
+          }
+        
+          return baseMedia;
         });
+        
 
         const allPosts = await Promise.all(mediaDetailsPromises);
         setPosts(allPosts);
