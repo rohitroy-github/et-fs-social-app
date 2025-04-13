@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProfilePage = () => {
   const [accessToken, setAccessToken] = useState(null);
-  const [userId, setUserId] = useState(null); // Backend-provided user_id
-  const [instaId, setInstaId] = useState(null); // Instagram actual ID
+  const [userId, setUserId] = useState(null); 
+  const [instaId, setInstaId] = useState(null); 
   const [username, setUsername] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -22,7 +23,7 @@ const ProfilePage = () => {
       sessionStorage.setItem("access_token", storedToken);
       sessionStorage.setItem("user_id", storedUid);
 
-      // Fetch IG ID & username
+      // Fetch Instagram ID & username
       axios
         .get(`https://graph.instagram.com/v22.0/me?fields=user_id,username&access_token=${storedToken}`)
         .then((res) => {
@@ -38,20 +39,20 @@ const ProfilePage = () => {
     }
   }, []);
 
-  if (!accessToken || !userId || !username)
+  // Loading state
+  if (!accessToken || !userId || !username) {
     return (
-      <div className="text-center mt-20 text-xl font-montserrat">
-        Loading... 
+      <div className="text-center mt-20 text-xl font-montserrat text-white">
+        Loading...
       </div>
     );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center relative font-montserrat">
-      {/* Access Token & ID Card */}
-      <div className="absolute top-5 right-5 bg-white shadow-lg rounded-xl p-4 w-80 text-sm break-words">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
-          🔐 Auth Details
-        </h2>
+    <div className="relative font-montserrat bg-gray-100 min-h-screen">
+      {/* Floating Debug Auth Card */}
+      <div className="absolute top-5 right-5 bg-white shadow-xl rounded-xl p-5 w-80 text-sm z-10">
+        <h2 className="text-lg font-semibold text-gray-800 mb-2">🔐 Auth Details</h2>
         <p className="text-gray-600">
           <span className="font-semibold">App User ID:</span> {userId}
         </p>
@@ -68,24 +69,35 @@ const ProfilePage = () => {
         </p>
       </div>
 
-      {/* Main Profile Section */}
-      <div className="bg-white p-10 rounded-3xl shadow-2xl text-center w-[400px]">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Welcome Back 👋
-        </h1>
-        <p className="text-gray-600">You’re logged in as:</p>
-        <p className="text-xl font-medium text-indigo-600 mt-2">
-          @{username}
-        </p>
-      </div>
+      {/* Main Profile Content */}
+      <div className="flex flex-col items-center justify-center min-h-screen gap-8 p-4">
+        <div className="bg-white p-8 rounded-3xl shadow-2xl text-center w-full max-w-sm">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome Back 👋</h1>
+          <p className="text-lg text-gray-600 mb-2">You’re logged in as:</p>
+          <p className="text-xl font-medium text-indigo-600 mb-4">@{username}</p>
+          <p className="text-sm text-gray-500">Here’s your profile information. Feel free to explore.</p>
+        </div>
 
-      <Link
-        to={`/${username}/feed`}
-        state={{ instaId }}
-        className="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-full transition font-semibold"
-      >
-        Go to Feed 📥
-      </Link>
+        {/* Feed Link Button */}
+        <Link
+          to={`/${username}/feed`}
+          state={{ instaId }}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-full transition duration-300 font-semibold shadow-md"
+        >
+          Go to Feed 📥
+        </Link>
+
+        {/* Optional Logout Button */}
+        <button
+          onClick={() => {
+            sessionStorage.clear();
+            navigate("/");  // Redirect to the home page after logout
+          }}
+          className="text-sm text-red-500 hover:text-red-700 mt-4 underline"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,23 +1,26 @@
+// src/pages/LoginPage.jsx
 const LoginPage = () => {
   const handleLogin = () => {
     window.location.href = "https://et-fs-social-app.vercel.app/auth/login";
   };
 
   return (
-    <div className="bg-white/30 backdrop-blur-md p-10 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
-      <h1 className="text-4xl font-bold text-center text-white mb-6 font-montserrat">
-        Meta Instagram App
-      </h1>
-      <p className="text-white/80 text-center mb-8 font-montserrat">
-        Connect with your Instagram profile and explore your content
-      </p>
-      <div className="flex justify-center">
-        <button
-          onClick={handleLogin}
-          className="bg-white text-[#833ab4] hover:bg-[#fcb045] hover:text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-all duration-300 font-montserrat cursor-pointer"
-        >
-          Login with Instagram
-        </button>
+    <div className="flex items-center justify-center min-h-screen w-full">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-4xl font-semibold text-center text-gray-800 mb-6 font-montserrat">
+          Welcome to Meta Instagram App
+        </h1>
+        <p className="text-gray-600 text-center mb-8 font-montserrat">
+          Login to connect with your Instagram account
+        </p>
+        <div className="flex justify-center">
+          <button
+            onClick={handleLogin}
+            className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-blue-700 transition duration-300 font-montserrat"
+          >
+            Login with Instagram
+          </button>
+        </div>
       </div>
     </div>
   );
