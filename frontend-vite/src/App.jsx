@@ -10,9 +10,11 @@ function App() {
   return (
     <Router>
       {/* Always show Navbar */}
-      <Navbar />
 
       <Layout>
+
+      <Navbar />
+
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
