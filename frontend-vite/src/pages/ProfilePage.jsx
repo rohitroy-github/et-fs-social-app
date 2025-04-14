@@ -4,9 +4,14 @@ import axios from "axios";
 
 const ProfilePage = () => {
   const [accessToken, setAccessToken] = useState(null);
-  const [userId, setUserId] = useState(null); 
-  const [instaId, setInstaId] = useState(null); 
+  const [userId, setUserId] = useState(null);
+  const [instaId, setInstaId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [accountType, setAccountType] = useState(null);
+  const [profilePic, setProfilePic] = useState(null);
+  const [followersCount, setFollowersCount] = useState(null);
+  const [followsCount, setFollowsCount] = useState(null);
+  const [mediaCount, setMediaCount] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,23 +28,29 @@ const ProfilePage = () => {
       sessionStorage.setItem("access_token", storedToken);
       sessionStorage.setItem("user_id", storedUid);
 
-      // Fetch Instagram ID & username
       axios
-        .get(`https://graph.instagram.com/v22.0/me?fields=user_id,username&access_token=${storedToken}`)
+        .get(
+          `https://graph.instagram.com/v22.0/me?fields=user_id,username,account_type,profile_picture_url,followers_count,follows_count,media_count&access_token=${storedToken}`
+        )
         .then((res) => {
-          const { user_id, username } = res.data;
-          setInstaId(user_id);
-          setUsername(username);
-          sessionStorage.setItem("insta_id", user_id);
-          sessionStorage.setItem("username", username);
+          const data = res.data.data?.[0] || res.data; // fallback for older format
+          setInstaId(data.user_id);
+          setUsername(data.username);
+          setAccountType(data.account_type);
+          setProfilePic(data.profile_picture_url);
+          setFollowersCount(data.followers_count);
+          setFollowsCount(data.follows_count);
+          setMediaCount(data.media_count);
+
+          sessionStorage.setItem("insta_id", data.user_id);
+          sessionStorage.setItem("username", data.username);
         })
         .catch((err) => {
-          console.error("Failed to fetch Instagram data", err);
+          console.error("Failed to fetch Instagram profile data", err);
         });
     }
   }, []);
 
-  // Loading state
   if (!accessToken || !userId || !username) {
     return (
       <div className="text-center mt-20 text-xl font-montserrat text-white">
@@ -49,54 +60,41 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="relative font-montserrat bg-gray-100 min-h-screen">
-      {/* Floating Debug Auth Card */}
-      <div className="absolute top-5 right-5 bg-white shadow-xl rounded-xl p-5 w-80 text-sm z-10">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">🔐 Auth Details</h2>
-        <p className="text-gray-600">
-          <span className="font-semibold">App User ID:</span> {userId}
-        </p>
-        <p className="text-gray-600">
-          <span className="font-semibold">IG ID:</span> {instaId}
-        </p>
-        <p className="text-gray-600">
-          <span className="font-semibold">Username:</span> @{username}
-        </p>
-        <p className="text-gray-600 mt-2">
-          <span className="font-semibold">Access Token:</span>
-          <br />
-          <span className="text-gray-500">{accessToken}</span>
-        </p>
-      </div>
+    <div className="relative font-montserrat h-screen  text-white flex items-center justify-center p-4">
+      <div className="z-10 max-w-xl w-full bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-8 relative border border-white/20 flex flex-col items-center text-center gap-6">
+        <h1 className="text-3xl font-bold">Welcome Back 👋</h1>
 
-      {/* Main Profile Content */}
-      <div className="flex flex-col items-center justify-center min-h-screen gap-8 p-4">
-        <div className="bg-white p-8 rounded-3xl shadow-2xl text-center w-full max-w-sm">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome Back 👋</h1>
-          <p className="text-lg text-gray-600 mb-2">You’re logged in as:</p>
-          <p className="text-xl font-medium text-indigo-600 mb-4">@{username}</p>
-          <p className="text-sm text-gray-500">Here’s your profile information. Feel free to explore.</p>
+        {/* Profile Picture */}
+        {profilePic && (
+          <img
+            src={profilePic}
+            alt="Profile"
+            className="w-28 h-28 rounded-full border-4 border-white shadow-lg"
+          />
+        )}
+
+        <p className="text-lg font-semibold text-white bg-white/10 px-4 py-2 rounded-full shadow-inner">@{username}</p>
+
+        {/* Details */}
+        <div className="w-full text-left text-sm bg-white/10 border border-white/10 p-4 rounded-xl shadow-inner">
+          <p><span className="font-semibold">App User ID:</span> {userId}</p>
+          <p><span className="font-semibold">Instagram ID:</span> {instaId}</p>
+          <p><span className="font-semibold">Account Type:</span> {accountType}</p>
+          <p><span className="font-semibold">Followers:</span> {followersCount}</p>
+          <p><span className="font-semibold">Following:</span> {followsCount}</p>
+          <p><span className="font-semibold">Total Media:</span> {mediaCount}</p>
+          <p><span className="font-semibold">Access Token:</span></p>
+          <div className="break-words text-xs text-white/70 mt-1">{accessToken}</div>
         </div>
 
-        {/* Feed Link Button */}
+        {/* Go to Feed */}
         <Link
           to={`/${username}/feed`}
           state={{ instaId }}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-full transition duration-300 font-semibold shadow-md"
+          className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold text-sm"
         >
-          Go to Feed 📥
+          Check out your feed
         </Link>
-
-        {/* Optional Logout Button */}
-        <button
-          onClick={() => {
-            sessionStorage.clear();
-            navigate("/");  // Redirect to the home page after logout
-          }}
-          className="text-sm text-red-500 hover:text-red-700 mt-4 underline"
-        >
-          Logout
-        </button>
       </div>
     </div>
   );
