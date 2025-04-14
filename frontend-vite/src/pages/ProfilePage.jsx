@@ -44,7 +44,8 @@ const ProfilePage = () => {
       .then((res) => {
         const data = res.data;
     
-        console.log(data);
+        console.log("PROFILE_DATA:", data);
+        
         setInstaId(data.id);
         setProfileName(data.name);
         setProfileBio(data.biography);
