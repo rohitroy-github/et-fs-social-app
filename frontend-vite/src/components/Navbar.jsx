@@ -26,7 +26,7 @@ const Navbar = () => {
   const handleLogout = () => {
     sessionStorage.clear();
     setUsername(null); // manually update state
-    navigate("/");
+    navigate("/"); // redirect to home after logout
   };
 
   const handleLogin = () => {
@@ -38,9 +38,9 @@ const Navbar = () => {
       <div className="absolute inset-0 opacity-20 z-0"></div>
 
       <div className="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg z-10 w-full flex justify-between items-center px-6 py-4 sm:flex-col sm:items-center sm:gap-4 md:flex-row md:gap-8">
-        <h1 className="text-xl font-bold text-white sm:text-center">
-          Meta Instagram App
-        </h1>
+      <Link to="/" className="text-xl font-bold text-white sm:text-center">
+      Meta Instagram App
+    </Link>
 
         {!username ? (
           <button
@@ -52,9 +52,28 @@ const Navbar = () => {
           </button>
         ) : (
           <div className="flex items-center gap-4 sm:flex-col sm:gap-2 sm:items-center md:flex-row md:gap-4">
+
+
+            {/* Navigation Links for Feed and Profile */}
+            <div className="flex gap-4 sm:flex-col sm:gap-2 md:flex-row md:gap-6">
+              <Link
+                to={`/${username}/feed`} // Dynamically include the username
+                className="text-white text-sm font-semibold md:text-lg"
+              >
+                Feed
+              </Link>
+              <Link
+                to={`/${username}/profile`} // Assuming you have a profile route
+                className="text-white text-sm font-semibold md:text-lg"
+              >
+                Profile
+              </Link>
+            </div>
+
             <p className="text-sm text-white sm:text-center md:text-lg">
               <span className="font-semibold text-lg">@{username}</span>
             </p>
+
             <button
               onClick={handleLogout}
               className="cursor-pointer flex items-center gap-3 bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-6 py-3 md:px-8 md:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold text-base md:text-xs"

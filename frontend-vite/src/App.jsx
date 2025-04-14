@@ -5,6 +5,7 @@ import FeedPage from "./pages/FeedPage";
 import Navbar from "./components/Navbar";
 import Layout from "./components/Layout";
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -12,14 +13,15 @@ function App() {
       {/* Always show Navbar */}
 
       <Layout>
-
-      <Navbar />
+        <Navbar />
 
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/:username/feed" element={<FeedPage />} />
         </Routes>
+
+        <Footer />
       </Layout>
     </Router>
   );
