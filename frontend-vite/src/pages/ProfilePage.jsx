@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader"; // adjust the path if needed
 
@@ -8,13 +8,14 @@ const ProfilePage = () => {
   const [userId, setUserId] = useState(null);
   const [instaId, setInstaId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [profileName, setProfileName] = useState(null);
+  const [profileBio, setProfileBio] = useState(null);
   const [accountType, setAccountType] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
   const [followersCount, setFollowersCount] = useState(null);
   const [followsCount, setFollowsCount] = useState(null);
   const [mediaCount, setMediaCount] = useState(null);
   const [loading, setLoading] = useState(true); // New loading state
-  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -32,12 +33,16 @@ const ProfilePage = () => {
 
       axios
         .get(
-          `https://graph.instagram.com/v22.0/me?fields=user_id,username,account_type,profile_picture_url,followers_count,follows_count,media_count&access_token=${storedToken}`
+          `https://graph.instagram.com/v22.0/me?fields=user_id,username,account_type,profile_picture_url,followers_count,follows_count,media_count,biography,name&access_token=${storedToken}`
         )
         .then((res) => {
           const data = res.data.data?.[0] || res.data;
+
+          console.log(data);
           setInstaId(data.user_id);
           setUsername(data.username);
+          setProfileName(data.name);
+          setProfileBio(data.biography);
           setAccountType(data.account_type);
           setProfilePic(data.profile_picture_url);
           setFollowersCount(data.followers_count);
@@ -65,7 +70,7 @@ const ProfilePage = () => {
   return (
     <div className="relative font-montserrat h-screen text-white flex items-center justify-center p-4">
       <div className="z-10 max-w-xl w-full bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-8 relative border border-white/20 flex flex-col items-center text-center gap-6">
-        <h1 className="text-3xl font-bold">Welcome Back 👋</h1>
+        <h1 className="text-3xl font-bold">Hey {profileName} 👋</h1>
 
         {profilePic && (
           <img
@@ -80,14 +85,35 @@ const ProfilePage = () => {
         </p>
 
         <div className="w-full text-left text-sm bg-white/10 border border-white/10 p-4 rounded-xl shadow-inner">
-          <p><span className="font-semibold">App User ID:</span> {userId}</p>
-          <p><span className="font-semibold">Instagram ID:</span> {instaId}</p>
-          <p><span className="font-semibold">Account Type:</span> {accountType}</p>
-          <p><span className="font-semibold">Followers:</span> {followersCount}</p>
-          <p><span className="font-semibold">Following:</span> {followsCount}</p>
-          <p><span className="font-semibold">Total Media:</span> {mediaCount}</p>
-          <p><span className="font-semibold">Access Token:</span></p>
-          <div className="break-words text-xs text-white/70 mt-1">{accessToken}</div>
+          <p>
+            <span className="font-semibold">App User ID:</span> {userId}
+          </p>
+          <p>
+            <span className="font-semibold">Instagram ID:</span> {instaId}
+          </p>
+          <p>
+            <span className="font-semibold">Account Type:</span> {accountType}
+          </p>
+          <p>
+            <span className="font-semibold">Profile Name:</span> {profileName}
+          </p>
+          <p>
+            <span className="font-semibold">Bio:</span> {profileBio}
+          </p>
+          <p>
+            <span className="font-semibold">Followers:</span> {followersCount}
+          </p>
+          <p>
+            <span className="font-semibold">Following:</span> {followsCount}
+          </p>
+          <p>
+            <span className="font-semibold">Total Media:</span> {mediaCount}
+          </p>
+
+          <p>
+            <span className="font-semibold">Access Token:</span>
+          </p>
+          <div className="break-words text-xs text-white/70">{accessToken}</div>
         </div>
 
         <Link
