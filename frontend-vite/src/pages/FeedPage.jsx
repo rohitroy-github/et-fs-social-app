@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import PostModal from "../components/PostModal";
+import Loader from "../components/Loader";
 
 const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -28,14 +29,13 @@ const FeedPage = () => {
             `https://graph.instagram.com/${media.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
           );
           const baseMedia = await baseRes.json();
-        
-          // If it's a carousel, fetch children
+
           if (baseMedia.media_type === "CAROUSEL_ALBUM") {
             const childrenRes = await fetch(
               `https://graph.instagram.com/${media.id}/children?access_token=${accessToken}`
             );
             const childrenData = await childrenRes.json();
-        
+
             const childDetails = await Promise.all(
               childrenData.data.map(async (child) => {
                 const childRes = await fetch(
@@ -44,16 +44,15 @@ const FeedPage = () => {
                 return await childRes.json();
               })
             );
-        
+
             return {
               ...baseMedia,
               children: childDetails,
             };
           }
-        
+
           return baseMedia;
         });
-        
 
         const allPosts = await Promise.all(mediaDetailsPromises);
         console.log(allPosts);
@@ -77,27 +76,28 @@ const FeedPage = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-20 text-xl font-montserrat">Loading posts...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen p-8 font-montserrat relative">
-      <h1 className="text-3xl font-bold text-center mb-8 text-white">Your Feed</h1>
-
-      {posts.length === 0 ? (
-        <div className="text-center">No posts found.</div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <PostCard key={post.id} media={post} onClick={handleCardClick} />
-          ))}
-        </div>
-      )}
-
-      {/* Modal */}
-      <PostModal media={selectedPost} onClose={handleCloseModal} />
-
+<div className="container max-w-5xl min-h-screen pt-8 font-montserrat mx-auto relative">
+  {posts.length === 0 ? (
+    <div className="text-center text-white">No posts found.</div>
+  ) : (
+    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <PostCard key={post.id} media={post} onClick={handleCardClick} />
+      ))}
     </div>
+  )}
+
+  <PostModal media={selectedPost} onClose={handleCloseModal} />
+</div>
+
   );
 };
 

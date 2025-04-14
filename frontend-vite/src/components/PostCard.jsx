@@ -12,12 +12,11 @@ const PostCard = ({ media, onClick }) => {
   return (
     <div
       onClick={() => onClick(media)}
-      className="bg-white rounded-lg shadow-md p-4 font-montserrat cursor-pointer"
+      className="bg-white/30 backdrop-blur-md border border-white/30 rounded-xl shadow-lg p-5 font-montserrat cursor-pointer transition-transform hover:scale-[1.02]"
     >
       <div className="flex flex-col items-center">
         {/* Fixed size for the card */}
-        <div className="w-64 h-80 bg-white flex justify-center items-center rounded-lg overflow-hidden">
-          {/* Handle different media types */}
+        <div className="w-full h-80 bg-white/10 rounded-lg overflow-hidden flex justify-center items-center">
           {media_type === "IMAGE" || media_type === "CAROUSEL_ALBUM" ? (
             <img
               src={previewUrl}
@@ -35,11 +34,11 @@ const PostCard = ({ media, onClick }) => {
           ) : null}
         </div>
 
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
-            {new Date(timestamp).toLocaleString()}
+        <div className="mt-4 text-center text-white">
+          <p className="text-sm text-white/80">
+            posted at {new Date(timestamp).toLocaleString()}
           </p>
-          <p className="text-sm text-gray-600">{id}</p>
+          <p className="text-xs text-white/80">{id}</p>
         </div>
       </div>
     </div>

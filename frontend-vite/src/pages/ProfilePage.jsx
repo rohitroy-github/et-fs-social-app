@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "../components/Loader"; // adjust the path if needed
 
 const ProfilePage = () => {
   const [accessToken, setAccessToken] = useState(null);
@@ -12,6 +13,7 @@ const ProfilePage = () => {
   const [followersCount, setFollowersCount] = useState(null);
   const [followsCount, setFollowsCount] = useState(null);
   const [mediaCount, setMediaCount] = useState(null);
+  const [loading, setLoading] = useState(true); // New loading state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const ProfilePage = () => {
           `https://graph.instagram.com/v22.0/me?fields=user_id,username,account_type,profile_picture_url,followers_count,follows_count,media_count&access_token=${storedToken}`
         )
         .then((res) => {
-          const data = res.data.data?.[0] || res.data; // fallback for older format
+          const data = res.data.data?.[0] || res.data;
           setInstaId(data.user_id);
           setUsername(data.username);
           setAccountType(data.account_type);
@@ -47,24 +49,24 @@ const ProfilePage = () => {
         })
         .catch((err) => {
           console.error("Failed to fetch Instagram profile data", err);
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading once data is fetched or error occurs
         });
+    } else {
+      setLoading(false); // Stop loading if no session data
     }
   }, []);
 
-  if (!accessToken || !userId || !username) {
-    return (
-      <div className="text-center mt-20 text-xl font-montserrat text-white">
-        Loading...
-      </div>
-    );
+  if (loading || !accessToken || !userId || !username) {
+    return <Loader />;
   }
 
   return (
-    <div className="relative font-montserrat h-screen  text-white flex items-center justify-center p-4">
+    <div className="relative font-montserrat h-screen text-white flex items-center justify-center p-4">
       <div className="z-10 max-w-xl w-full bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-8 relative border border-white/20 flex flex-col items-center text-center gap-6">
         <h1 className="text-3xl font-bold">Welcome Back 👋</h1>
 
-        {/* Profile Picture */}
         {profilePic && (
           <img
             src={profilePic}
@@ -73,9 +75,10 @@ const ProfilePage = () => {
           />
         )}
 
-        <p className="text-lg font-semibold text-white bg-white/10 px-4 py-2 rounded-full shadow-inner">@{username}</p>
+        <p className="text-lg font-semibold text-white bg-white/10 px-4 py-2 rounded-full shadow-inner">
+          @{username}
+        </p>
 
-        {/* Details */}
         <div className="w-full text-left text-sm bg-white/10 border border-white/10 p-4 rounded-xl shadow-inner">
           <p><span className="font-semibold">App User ID:</span> {userId}</p>
           <p><span className="font-semibold">Instagram ID:</span> {instaId}</p>
@@ -87,13 +90,12 @@ const ProfilePage = () => {
           <div className="break-words text-xs text-white/70 mt-1">{accessToken}</div>
         </div>
 
-        {/* Go to Feed */}
         <Link
           to={`/${username}/feed`}
           state={{ instaId }}
           className="cursor-pointer flex items-center justify-center gap-2 bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold text-sm"
         >
-          Check out your feed
+          Check out my feed
         </Link>
       </div>
     </div>
