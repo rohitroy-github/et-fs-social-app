@@ -21,43 +21,48 @@ const ProfilePage = () => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("access_token");
     const uid = params.get("user_id");
+    const username = params.get("username");
 
     const storedToken = token || sessionStorage.getItem("access_token");
     const storedUid = uid || sessionStorage.getItem("user_id");
+    const storedUsername = username || sessionStorage.getItem("username");
+
 
     if (storedToken && storedUid) {
       setAccessToken(storedToken);
       setUserId(storedUid);
+      setUsername(storedUsername);
       sessionStorage.setItem("access_token", storedToken);
       sessionStorage.setItem("user_id", storedUid);
+      sessionStorage.setItem("username", storedUsername);
+
 
       axios
-        .get(
-          `https://graph.instagram.com/v22.0/me?fields=user_id,username,account_type,profile_picture_url,followers_count,follows_count,media_count,biography,name&access_token=${storedToken}`
-        )
-        .then((res) => {
-          const data = res.data.data?.[0] || res.data;
-
-          console.log(data);
-          setInstaId(data.user_id);
-          setUsername(data.username);
-          setProfileName(data.name);
-          setProfileBio(data.biography);
-          setAccountType(data.account_type);
-          setProfilePic(data.profile_picture_url);
-          setFollowersCount(data.followers_count);
-          setFollowsCount(data.follows_count);
-          setMediaCount(data.media_count);
-
-          sessionStorage.setItem("insta_id", data.user_id);
-          sessionStorage.setItem("username", data.username);
-        })
-        .catch((err) => {
-          console.error("Failed to fetch Instagram profile data", err);
-        })
-        .finally(() => {
-          setLoading(false); // Stop loading once data is fetched or error occurs
-        });
+      .get(`https://et-fs-social-app.vercel.app/user/profile`, {
+        params: { access_token: storedToken },
+      })
+      .then((res) => {
+        const data = res.data;
+    
+        console.log(data);
+        setInstaId(data.id);
+        setProfileName(data.name);
+        setProfileBio(data.biography);
+        setAccountType(data.account_type);
+        setProfilePic(data.profile_picture_url);
+        setFollowersCount(data.followers_count);
+        setFollowsCount(data.follows_count);
+        setMediaCount(data.media_count);
+    
+        sessionStorage.setItem("insta_id", data.id);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch Instagram profile data", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    
     } else {
       setLoading(false); // Stop loading if no session data
     }

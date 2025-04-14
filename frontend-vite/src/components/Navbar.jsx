@@ -63,7 +63,7 @@ const Navbar = () => {
                 Feed
               </Link>
               <Link
-                to={`/profile`} // Assuming you have a profile route
+                to={`/${username}/profile`} // Assuming you have a profile route
                 className="text-white text-sm font-semibold md:text-lg"
               >
                 Profile
