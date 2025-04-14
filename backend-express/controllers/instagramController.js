@@ -41,14 +41,29 @@ export const handleRedirect = async (req, res) => {
 
     const { access_token, user_id } = tokenRes.data;
 
-    // Send the access token and user_id back to the frontend
-    res.redirect(`http://localhost:5173/profile?access_token=${access_token}&user_id=${user_id}`);
-    // res.redirect(`http://localhost:5173/profile?access_token=${access_token}`);
+    // Get extended user profile details using Instagram Graph API
+    const profileRes = await axios.get(
+      `https://graph.instagram.com/v17.0/me`,
+      {
+        params: {
+          fields:
+            "username",
+          access_token: access_token,
+        },
+      }
+    );
+
+    const { username } = profileRes.data;
+
+    // Redirect with access token, user_id, and username in URL
+    res.redirect(
+      `http://localhost:5173/${username}/profile?access_token=${access_token}&user_id=${user_id}`
+    );
   } catch (err) {
     console.error(
-      "❌ Error exchanging code for token:",
+      "❌ Error exchanging code for token or fetching profile:",
       err.response?.data || err.message
     );
-    res.status(500).send("Error getting access token");
+    res.status(500).send("Error during Instagram OAuth process");
   }
 };
