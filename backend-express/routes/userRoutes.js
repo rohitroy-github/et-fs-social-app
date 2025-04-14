@@ -1,12 +1,8 @@
-import express from 'express';
-import {
-
-  handleProfileInformation,
-} from '../controllers/instagramController.js';
+import express from "express";
+import { handleProfileInformation } from "../controllers/instagramController.js";
 
 const router = express.Router();
 
-router.get('/profile', handleProfileInformation);
-router.get('/redirect', handleRedirect);
+router.get("/profile", handleProfileInformation);
 
 export default router;
