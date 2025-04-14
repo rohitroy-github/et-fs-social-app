@@ -55,7 +55,8 @@ const FeedPage = () => {
         });
 
         const allPosts = await Promise.all(mediaDetailsPromises);
-        console.log(allPosts);
+        // 🛠️ Debug: Log all fetched posts from Instagram Graph API response
+        // console.log("FETCHED_POSTS:", allPosts);
         setPosts(allPosts);
         setLoading(false);
       } catch (err) {
@@ -84,20 +85,19 @@ const FeedPage = () => {
   }
 
   return (
-<div className="container max-w-5xl min-h-screen pt-8 font-montserrat mx-auto relative">
-  {posts.length === 0 ? (
-    <div className="text-center text-white">No posts found.</div>
-  ) : (
-    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6">
-      {posts.map((post) => (
-        <PostCard key={post.id} media={post} onClick={handleCardClick} />
-      ))}
+    <div className="container max-w-5xl min-h-screen pt-8 font-montserrat mx-auto relative">
+      {posts.length === 0 ? (
+        <div className="text-center text-white">No posts found.</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <PostCard key={post.id} media={post} onClick={handleCardClick} />
+          ))}
+        </div>
+      )}
+
+      <PostModal media={selectedPost} onClose={handleCloseModal} />
     </div>
-  )}
-
-  <PostModal media={selectedPost} onClose={handleCloseModal} />
-</div>
-
   );
 };
 

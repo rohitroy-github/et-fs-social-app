@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Loader from "../components/Loader"; // adjust the path if needed
+import Loader from "../components/Loader"; 
 
 const ProfilePage = () => {
   const [accessToken, setAccessToken] = useState(null);
@@ -15,18 +15,17 @@ const ProfilePage = () => {
   const [followersCount, setFollowersCount] = useState(null);
   const [followsCount, setFollowsCount] = useState(null);
   const [mediaCount, setMediaCount] = useState(null);
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("access_token");
     const uid = params.get("user_id");
-    const username = params.get("username");
+    const username = params.get("user_name");
 
     const storedToken = token || sessionStorage.getItem("access_token");
     const storedUid = uid || sessionStorage.getItem("user_id");
-    const storedUsername = username || sessionStorage.getItem("username");
-
+    const storedUsername = username || sessionStorage.getItem("user_name");
 
     if (storedToken && storedUid) {
       setAccessToken(storedToken);
@@ -34,38 +33,37 @@ const ProfilePage = () => {
       setUsername(storedUsername);
       sessionStorage.setItem("access_token", storedToken);
       sessionStorage.setItem("user_id", storedUid);
-      sessionStorage.setItem("username", storedUsername);
-
+      sessionStorage.setItem("user_name", storedUsername);
 
       axios
-      .get(`https://et-fs-social-app.vercel.app/user/profile`, {
-        params: { access_token: storedToken },
-      })
-      .then((res) => {
-        const data = res.data;
-    
-        console.log("PROFILE_DATA:", data);
-        
-        setInstaId(data.id);
-        setProfileName(data.name);
-        setProfileBio(data.biography);
-        setAccountType(data.account_type);
-        setProfilePic(data.profile_picture_url);
-        setFollowersCount(data.followers_count);
-        setFollowsCount(data.follows_count);
-        setMediaCount(data.media_count);
-    
-        sessionStorage.setItem("insta_id", data.id);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch Instagram profile data", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    
+        .get(`https://et-fs-social-app.vercel.app/user/profile`, {
+          params: { access_token: storedToken },
+        })
+        .then((res) => {
+          const data = res.data;
+
+          // 🛠️ Debug: Log complete Instagram profile data fetched from backend
+          // console.log("PROFILE_DATA:", data);
+
+          setInstaId(data.id);
+          setProfileName(data.name);
+          setProfileBio(data.biography);
+          setAccountType(data.account_type);
+          setProfilePic(data.profile_picture_url);
+          setFollowersCount(data.followers_count);
+          setFollowsCount(data.follows_count);
+          setMediaCount(data.media_count);
+
+          sessionStorage.setItem("insta_id", data.id);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch Instagram profile data", err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
-      setLoading(false); // Stop loading if no session data
+      setLoading(false);
     }
   }, []);
 

@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaInstagram } from "react-icons/fa";
 
 const Navbar = () => {
-  const [username, setUsername] = useState(sessionStorage.getItem("username"));
+  const [username, setUsername] = useState(sessionStorage.getItem("user_name"));
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleStorageChange = () => {
-      setUsername(sessionStorage.getItem("username"));
+      setUsername(sessionStorage.getItem("user_name"));
     };
 
     // Listen for changes in sessionStorage (even from other tabs)
@@ -25,8 +25,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    setUsername(null); // manually update state
-    navigate("/"); // redirect to home after logout
+    setUsername(null);
+    navigate("/");
   };
 
   const handleLogin = () => {
@@ -57,13 +57,13 @@ const Navbar = () => {
             {/* Navigation Links for Feed and Profile */}
             <div className="flex gap-4 sm:flex-col sm:gap-2 md:flex-row md:gap-6">
               <Link
-                to={`/${username}/feed`} // Dynamically include the username
+                to={`/${username}/feed`} 
                 className="text-white text-sm font-semibold md:text-lg"
               >
                 Feed
               </Link>
               <Link
-                to={`/${username}/profile`} // Assuming you have a profile route
+                to={`/${username}/profile`} 
                 className="text-white text-sm font-semibold md:text-lg"
               >
                 Profile

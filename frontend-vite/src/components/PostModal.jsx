@@ -40,7 +40,7 @@ const PostModal = ({ media, onClose }) => {
       const data = await res.json();
       // Send the reply to the comment and log the response for debugging
       // The data contains the response from the Instagram API, confirming the reply was successfully posted.
-      console.log("Reply sent:", data);
+      // console.log("FETCHED_COMMENTS:", data);
       setComments(data.data || []);
     } catch (error) {
       console.error("Error fetching comments:", error);

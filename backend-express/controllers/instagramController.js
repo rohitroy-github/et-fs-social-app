@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const redirectToInstagram = (req, res) => {
+export const handleLoginToInstagram = (req, res) => {
   const scopes = [
     "instagram_business_basic",
     "instagram_business_manage_messages",
@@ -64,7 +64,7 @@ export const handleRedirect = async (req, res) => {
 };
 
 
-export const handleProfileInformation = async (req, res) => {
+export const fetchUserProfileInformation = async (req, res) => {
   const { access_token } = req.query;
 
   if (!access_token) {

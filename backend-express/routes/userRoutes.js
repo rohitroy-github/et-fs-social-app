@@ -1,8 +1,8 @@
 import express from "express";
-import { handleProfileInformation } from "../controllers/instagramController.js";
+import { fetchUserProfileInformation } from "../controllers/instagramController.js";
 
 const router = express.Router();
 
-router.get("/profile", handleProfileInformation);
+router.get("/profile", fetchUserProfileInformation);
 
 export default router;
