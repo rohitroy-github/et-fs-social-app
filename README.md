@@ -19,7 +19,12 @@
 
 ## Snapshots
 
-> _Add screenshots or GIFs here if needed_
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+  <img src="/snapshots/snap1.png" alt="App Snapshot 1" className="rounded-xl shadow-lg" />
+  <img src="/snapshots/snap2.png" alt="App Snapshot 2" className="rounded-xl shadow-lg" />
+  <img src="/snapshots/snap3.png" alt="App Snapshot 3" className="rounded-xl shadow-lg" />
+  <img src="/snapshots/snap4.png" alt="App Snapshot 4" className="rounded-xl shadow-lg" />
+</div>
 
 ---
 

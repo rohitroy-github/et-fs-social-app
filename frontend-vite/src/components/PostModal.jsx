@@ -62,7 +62,7 @@ const PostModal = ({ media, onClose }) => {
     setReplying(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}user/post/comment/reply`,
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/user/post/comment/reply`,
         {
           access_token: accessToken,
           comment_id: replyToCommentId,

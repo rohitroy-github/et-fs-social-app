@@ -31,7 +31,8 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   return (
-    <div className="w-full  max-w-5/6 mt-5 mx-auto px-4 sm:px-6 lg:px-8 font-montserrat z-50 relative">
+    <div className="w-full max-w-5/6 mt-5 mx-auto px-4 sm:px-6 lg:px-8 font-montserrat z-50 relative">
+
       <div className="absolute inset-0 opacity-20 z-0"></div>
 
       <div className="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg z-10 w-full flex justify-between items-center px-6 py-4">

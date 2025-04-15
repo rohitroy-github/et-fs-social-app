@@ -64,7 +64,7 @@ const fetchPosts = async () => {
   }
 
   return (
-    <div className="container max-w-5xl min-h-screen pt-8 font-montserrat mx-auto relative">
+    <div className="container md:max-w-5xl lg:max-w-5xl min-h-screen pt-8 font-montserrat mx-auto relative">
       {posts.length === 0 ? (
         <div className="text-center text-white">No posts found.</div>
       ) : (
