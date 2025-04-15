@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa"; // <- Font Awesome icons
 import InstagramConnectButton from "../components/InstagramConnectButton";
 
 const Navbar = () => {
   const [username, setUsername] = useState(sessionStorage.getItem("user_name"));
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,10 +13,7 @@ const Navbar = () => {
       setUsername(sessionStorage.getItem("user_name"));
     };
 
-    // Listen for changes in sessionStorage (even from other tabs)
     window.addEventListener("storage", handleStorageChange);
-
-    // Optional: also run when navigating within the same tab
     const interval = setInterval(handleStorageChange, 1000);
 
     return () => {
@@ -29,48 +28,78 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+
   return (
-    <div className="w-full max-w-5/6 mt-5 mx-auto flex justify-between items-center font-montserrat z-50 relative">
+    <div className="w-full  max-w-5/6 mt-5 mx-auto px-4 sm:px-6 lg:px-8 font-montserrat z-50 relative">
       <div className="absolute inset-0 opacity-20 z-0"></div>
 
-      <div className="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg z-10 w-full flex justify-between items-center px-6 py-4 sm:flex-col sm:items-center sm:gap-4 md:flex-row md:gap-8">
-        <Link to="/" className="text-xl font-bold text-white sm:text-center">
-          Meta Instagram App
-        </Link>
+      <div className="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg z-10 w-full flex justify-between items-center px-6 py-4">
+      <Link to="/" className="text-xl font-bold text-white sm:text-sm md:text-xl">
+  Meta Instagram App
+</Link>
 
-        {!username ? (
-          <InstagramConnectButton variant="navbar" />
-        ) : (
-          <div className="flex items-center gap-4 sm:flex-col sm:gap-2 sm:items-center md:flex-row md:gap-4">
-            {/* Navigation Links for Feed and Profile */}
-            <div className="flex gap-4 sm:flex-col sm:gap-2 md:flex-row md:gap-6">
-              <Link
-                to={`/${username}/feed`}
-                className="text-white text-sm font-semibold md:text-lg"
+
+        <div className="md:hidden">
+          <button onClick={toggleMobileMenu} className="text-white focus:outline-none">
+            {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
+        </div>
+
+        <div className="hidden md:flex items-center gap-6">
+          {!username ? (
+            <InstagramConnectButton variant="navbar" />
+          ) : (
+            <>
+              <div className="flex gap-6">
+                <Link to={`/${username}/feed`} className="text-white text-lg font-semibold">
+                  Feed
+                </Link>
+                <Link to={`/${username}/profile`} className="text-white text-lg font-semibold">
+                  Profile
+                </Link>
+              </div>
+
+              <p className="text-white text-lg font-semibold">@{username}</p>
+
+              <button
+                onClick={handleLogout}
+                className="bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-6 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-sm font-semibold"
               >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden mt-2 bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg p-4 flex flex-col gap-4 z-50">
+          {!username ? (
+            <InstagramConnectButton variant="navbar" />
+          ) : (
+            <>
+              <Link to={`/${username}/feed`} className="text-white text-base font-semibold" onClick={toggleMobileMenu}>
                 Feed
               </Link>
-              <Link
-                to={`/${username}/profile`}
-                className="text-white text-sm font-semibold md:text-lg"
-              >
+              <Link to={`/${username}/profile`} className="text-white text-base font-semibold" onClick={toggleMobileMenu}>
                 Profile
               </Link>
-            </div>
-
-            <p className="text-sm text-white sm:text-center md:text-lg">
-              <span className="font-semibold text-lg">@{username}</span>
-            </p>
-
-            <button
-              onClick={handleLogout}
-              className="cursor-pointer flex items-center gap-3 bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-6 py-3 md:px-8 md:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold text-base md:text-xs"
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
+              <p className="text-white text-base font-semibold">@{username}</p>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  toggleMobileMenu();
+                }}
+                className="bg-gradient-to-r from-[#feda75cc] via-[#d62976cc] to-[#4f5bd5cc] text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95 text-sm font-semibold"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

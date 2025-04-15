@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaPen, FaTimes } from "react-icons/fa";
+import axios from "axios";
 
 const PostModal = ({ media, onClose }) => {
   if (!media) return null;
@@ -26,11 +27,11 @@ const PostModal = ({ media, onClose }) => {
   const fetchComments = async () => {
     const accessToken = getAccessToken();
     if (!accessToken) return;
-  
+
     setLoadingComments(true);
     try {
       const res = await axios.get(
-        "https://et-fs-social-app.vercel.app/user/post/comment",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/user/post/comment`,
         {
           params: {
             access_token: accessToken,
@@ -38,13 +39,13 @@ const PostModal = ({ media, onClose }) => {
           },
         }
       );
-  
+
       const data = res.data;
-  
+
       // Send the reply to the comment and log the response for debugging
       // The data contains the response from the Instagram API, confirming the reply was successfully posted.
       // console.log("FETCHED_COMMENTS:", data);
-  
+
       setComments(data.data || []);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -52,27 +53,26 @@ const PostModal = ({ media, onClose }) => {
       setLoadingComments(false);
     }
   };
-  
 
   // Handle sending a reply
   const handleSendReply = async () => {
     const accessToken = getAccessToken();
     if (!accessToken || !replyMessage.trim()) return;
-  
+
     setReplying(true);
     try {
       const res = await axios.post(
-        "https://et-fs-social-app.vercel.app/user/post/comment/reply",
+        `${import.meta.env.VITE_BACKEND_BASE_URL}/user/post/comment/reply`,
         {
           access_token: accessToken,
           comment_id: replyToCommentId,
           message: replyMessage,
         }
       );
-  
+
       // Log the reply sent response from the API to verify that the reply was successfully posted
       // console.log("Reply sent:", res.data);
-  
+
       setReplyMessage("");
       setReplyToCommentId(null);
       await fetchComments();
@@ -82,7 +82,6 @@ const PostModal = ({ media, onClose }) => {
       setReplying(false);
     }
   };
-  
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -134,7 +133,9 @@ const PostModal = ({ media, onClose }) => {
         <div className="w-full md:w-1/2 max-h-[70vh] overflow-y-auto px-2 flex flex-col justify-start items-start">
           <h2 className="text-white text-xl font-semibold mb-4">Comments</h2>
           {loadingComments ? (
-            <p className="text-gray-300">Loading comments...</p>
+            <p className="text-gray-300 text-center font-semibold">
+              Loading your comments
+            </p>
           ) : comments.length > 0 ? (
             <div className="w-full">
               {comments.map((comment) => (

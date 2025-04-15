@@ -3,7 +3,7 @@ import { FaInstagram } from "react-icons/fa";
 
 const InstagramConnectButton = ({ variant = "login_page" }) => {
   const handleLogin = () => {
-    window.location.href = "https://et-fs-social-app.vercel.app/auth/login";
+    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_URL}/auth/login`;
   };
 
   // Define style variants

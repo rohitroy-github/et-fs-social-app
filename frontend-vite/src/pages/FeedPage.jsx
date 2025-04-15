@@ -25,8 +25,8 @@ const fetchPosts = async () => {
   setLoading(true);
 
   axios
-    .get(`https://et-fs-social-app.vercel.app/user/posts`, {
-      params: {
+  .get(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/posts`, {
+    params: {
         access_token: accessToken,
         user_id: userId,
       },
