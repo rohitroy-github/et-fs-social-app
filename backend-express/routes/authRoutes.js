@@ -2,7 +2,7 @@ import express from 'express';
 import {
   handleLoginToInstagram,
   handleRedirect,
-} from '../controllers/instagramController.js';
+} from '../controllers/IG_businessLogicController.js';
 
 const router = express.Router();
 

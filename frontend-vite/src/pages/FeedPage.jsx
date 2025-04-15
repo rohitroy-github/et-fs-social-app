@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import PostModal from "../components/PostModal";
 import Loader from "../components/Loader";
+import axios from "axios";
 
 const FeedPage = () => {
   const [posts, setPosts] = useState([]);
@@ -21,7 +22,7 @@ const fetchPosts = async () => {
     return;
   }
 
-  setLoading(true); // Optional loading state
+  setLoading(true);
 
   axios
     .get(`https://et-fs-social-app.vercel.app/user/posts`, {
@@ -34,9 +35,9 @@ const fetchPosts = async () => {
       const posts = res.data;
 
       // 🛠️ Debug: Log fetched media posts
-      console.log("MEDIA_POSTS:", posts);
+      // console.log("MEDIA_POSTS:", posts);
 
-      setMediaPosts(posts); // Assuming you store media data in state
+      setPosts(posts); 
     })
     .catch((err) => {
       console.error("❌ Failed to fetch media posts", err);
