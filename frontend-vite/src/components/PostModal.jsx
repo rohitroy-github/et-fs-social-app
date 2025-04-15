@@ -62,7 +62,7 @@ const PostModal = ({ media, onClose }) => {
     setReplying(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_BASE_URL}/user/post/comment/reply`,
+        `${import.meta.env.VITE_BACKEND_BASE_URL}user/post/comment/reply`,
         {
           access_token: accessToken,
           comment_id: replyToCommentId,
@@ -71,7 +71,7 @@ const PostModal = ({ media, onClose }) => {
       );
 
       // Log the reply sent response from the API to verify that the reply was successfully posted
-      // console.log("Reply sent:", res.data);
+      console.log("Reply sent:", res.data);
 
       setReplyMessage("");
       setReplyToCommentId(null);

@@ -6,6 +6,6 @@ const router = express.Router();
 router.get("/profile", fetchUserProfileInformation);
 router.get("/posts", fetchUserPosts);
 router.get("/post/comment", fetchPostComments);
-router.get("/post/comment/reply", handleCommentReply);
+router.post("/post/comment/reply", handleCommentReply);
 
 export default router;
