@@ -1,41 +1,37 @@
-# et-fs-social-app
+# Cohere Chatbot
 
-**et-fs-social-app** is a full-stack MERN application that allows Instagram Business Account users to log in via Meta's OAuth, view their profile details, and explore recent posts, reels, and media. Built with a sleek, responsive glassmorphism design using Vite + React + Tailwind CSS.
+**Cohere Chatbot** is a FastAPI-based chatbot application that integrates Cohere's AI API to generate intelligent responses. It maintains a short-term conversation history for a more contextual chat experience.
 
-**This application uses sessionStorage and runs on your local browser during development.**
+**This app can be tested locally !**
 
 ---
 
 ## Features
 
-- **Instagram Login**: Authenticate via Instagram Graph API using Meta App credentials.
-- **User Profile Viewer**: Display profile name, bio, followers, following, account type, profile picture, and more.
-- **Media Feed Viewer**: Fetch and display recent posts, reels, and media.
-- **Comment Interaction**: View and reply to comments on your business posts.
-- **Responsive Design**: Glassmorphism UI with TailwindCSS styling.
-- **Session Storage**: Uses `sessionStorage` to persist tokens and user IDs across pages.
+- **Chat Functionality**: Communicate with the AI model via a RESTful API.
+- **Conversation History**: Stores the last five messages to provide context-aware responses.
+- **FastAPI Integration**: A lightweight, high-performance backend.
+- **Environment Variable Support**: API keys are securely managed using a `.env` file.
+- **Pydantic Validation**: Ensures that user input is correctly formatted.
+- **Minimal Memory Usage**: Maintains only recent messages to optimize performance.
 
 ---
 
 ## Snapshots
 
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-  <img src="/snapshots/snap1.png" alt="App Snapshot 1" className="rounded-xl shadow-lg" />
-  <img src="/snapshots/snap2.png" alt="App Snapshot 2" className="rounded-xl shadow-lg" />
-  <img src="/snapshots/snap3.png" alt="App Snapshot 3" className="rounded-xl shadow-lg" />
-  <img src="/snapshots/snap4.png" alt="App Snapshot 4" className="rounded-xl shadow-lg" />
-</div>
+| ![Login Page](https://github.com/user-attachments/assets/9baac6e3-9cd4-48fe-b9d2-9a70c809fd97) | ![Profile Page](https://github.com/user-attachments/assets/eb9b7888-155c-458a-99d6-cf3c24666336) |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| ![Feed Page](https://github.com/user-attachments/assets/b23323ca-8b11-4e6c-84a5-88871f92ba54) | ![Post Viewer](https://github.com/user-attachments/assets/41b69a34-5649-4a5b-8c05-d64682e06f10)           |
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: React.js, Vite, Javascript, TailwindCSS
-- **Backend**: Node.js, Express.js
-- **External Database**: None
-- **API**: Instagram Graph API (Business accounts only)
-- **Browser Storage**: sessionStorage
-- **Developer Tools**: Meta for Developers (Instagram App)
+- **Backend**: FastAPI  
+- **AI Integration**: Cohere API  
+- **Environment Management**: dotenv  
+- **Validation**: Pydantic  
+- **Server**: Uvicorn  
 
 ---
 
@@ -43,8 +39,26 @@
 
 ### Prerequisites
 
-- A Facebook Developer Account
-- An Instagram Business Account linked to a Facebook Page
-- Node.js and npm installed
+- **Python**: 3.10 or higher  
+- **FastAPI**: Installed  
+- **Cohere API Key**: Get from [Cohere's official website](https://cohere.com/)  
+- **Postman or Curl**: To test API requests  
 
 ---
+
+## Installation
+
+### Running the main server
+```sh
+uvicorn app:app --reload --host 127.0.0.1 --port 8000
+```
+
+### Running the chat client (on the terminal)
+```sh
+python chat_terminal.py
+```
+
+### Running the frontend (frontend application / Chatbot)
+```sh
+npm run dev
+```
