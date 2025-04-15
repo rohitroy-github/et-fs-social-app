@@ -10,7 +10,6 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <Router>
-      {/* Always show Navbar */}
 
       <Layout>
         <Navbar />

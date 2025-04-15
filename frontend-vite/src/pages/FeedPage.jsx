@@ -9,64 +9,42 @@ const FeedPage = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const userId = sessionStorage.getItem("user_id");
-      const accessToken = sessionStorage.getItem("access_token");
-
-      if (!userId || !accessToken) {
-        window.location.href = "/profile";
-        return;
-      }
-
-      try {
-        const mediaRes = await fetch(
-          `https://graph.instagram.com/v22.0/${userId}/media?access_token=${accessToken}`
-        );
-        const mediaData = await mediaRes.json();
-
-        const mediaDetailsPromises = mediaData.data.map(async (media) => {
-          const baseRes = await fetch(
-            `https://graph.instagram.com/${media.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
-          );
-          const baseMedia = await baseRes.json();
-
-          if (baseMedia.media_type === "CAROUSEL_ALBUM") {
-            const childrenRes = await fetch(
-              `https://graph.instagram.com/${media.id}/children?access_token=${accessToken}`
-            );
-            const childrenData = await childrenRes.json();
-
-            const childDetails = await Promise.all(
-              childrenData.data.map(async (child) => {
-                const childRes = await fetch(
-                  `https://graph.instagram.com/${child.id}?fields=id,media_type,media_url,timestamp&access_token=${accessToken}`
-                );
-                return await childRes.json();
-              })
-            );
-
-            return {
-              ...baseMedia,
-              children: childDetails,
-            };
-          }
-
-          return baseMedia;
-        });
-
-        const allPosts = await Promise.all(mediaDetailsPromises);
-        // 🛠️ Debug: Log all fetched posts from Instagram Graph API response
-        // console.log("FETCHED_POSTS:", allPosts);
-        setPosts(allPosts);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-        setLoading(false);
-      }
-    };
-
     fetchPosts();
   }, []);
+
+const fetchPosts = async () => {
+  const accessToken = sessionStorage.getItem("access_token");
+  const userId = sessionStorage.getItem("user_id");
+
+  if (!accessToken || !userId) {
+    window.location.href = "/profile";
+    return;
+  }
+
+  setLoading(true); // Optional loading state
+
+  axios
+    .get(`https://et-fs-social-app.vercel.app/user/posts`, {
+      params: {
+        access_token: accessToken,
+        user_id: userId,
+      },
+    })
+    .then((res) => {
+      const posts = res.data;
+
+      // 🛠️ Debug: Log fetched media posts
+      console.log("MEDIA_POSTS:", posts);
+
+      setMediaPosts(posts); // Assuming you store media data in state
+    })
+    .catch((err) => {
+      console.error("❌ Failed to fetch media posts", err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+};
 
   const handleCardClick = (media) => {
     setSelectedPost(media);
