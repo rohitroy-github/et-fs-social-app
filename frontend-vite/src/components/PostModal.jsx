@@ -16,6 +16,74 @@ const PostModal = ({ media, onClose }) => {
   const [replyMessage, setReplyMessage] = useState("");
   const [replying, setReplying] = useState(false);
 
+  const getAccessToken = () => sessionStorage.getItem("access_token");
+
+  // Fetch comments when currentItem changes
+  useEffect(() => {
+    fetchComments();
+  }, [currentItem.id]);
+
+  const fetchComments = async () => {
+    const accessToken = getAccessToken();
+    if (!accessToken) return;
+  
+    setLoadingComments(true);
+    try {
+      const res = await axios.get(
+        "https://et-fs-social-app.vercel.app/user/post/comment",
+        {
+          params: {
+            access_token: accessToken,
+            media_id: currentItem.id,
+          },
+        }
+      );
+  
+      const data = res.data;
+  
+      // Send the reply to the comment and log the response for debugging
+      // The data contains the response from the Instagram API, confirming the reply was successfully posted.
+      // console.log("FETCHED_COMMENTS:", data);
+  
+      setComments(data.data || []);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+  
+
+  // Handle sending a reply
+  const handleSendReply = async () => {
+    const accessToken = getAccessToken();
+    if (!accessToken || !replyMessage.trim()) return;
+  
+    setReplying(true);
+    try {
+      const res = await axios.post(
+        "https://et-fs-social-app.vercel.app/user/post/comment/reply",
+        {
+          access_token: accessToken,
+          comment_id: replyToCommentId,
+          message: replyMessage,
+        }
+      );
+  
+      // Log the reply sent response from the API to verify that the reply was successfully posted
+      // console.log("Reply sent:", res.data);
+  
+      setReplyMessage("");
+      setReplyToCommentId(null);
+      await fetchComments();
+    } catch (error) {
+      console.error("Error sending reply:", error);
+    } finally {
+      setReplying(false);
+    }
+  };
+  
+
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1
@@ -26,58 +94,6 @@ const PostModal = ({ media, onClose }) => {
     setCurrentIndex((prevIndex) =>
       prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1
     );
-  };
-
-  const fetchComments = async () => {
-    const accessToken = sessionStorage.getItem("access_token");
-    if (!accessToken) return;
-
-    setLoadingComments(true);
-    try {
-      const res = await fetch(
-        `https://graph.instagram.com/${currentItem.id}/comments?fields=id,text,timestamp,like_count,from&access_token=${accessToken}`
-      );
-      const data = await res.json();
-      // Send the reply to the comment and log the response for debugging
-      // The data contains the response from the Instagram API, confirming the reply was successfully posted.
-      // console.log("FETCHED_COMMENTS:", data);
-      setComments(data.data || []);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-    } finally {
-      setLoadingComments(false);
-    }
-  };
-
-  // Fetch comments when currentItem changes
-  useEffect(() => {
-    fetchComments();
-  }, [currentItem.id]);
-
-  // Handle sending a reply
-  const handleSendReply = async () => {
-    const accessToken = sessionStorage.getItem("access_token");
-    if (!accessToken || !replyMessage.trim()) return;
-
-    setReplying(true);
-    try {
-      const res = await fetch(
-        `https://graph.instagram.com/${replyToCommentId}/replies?message=${encodeURIComponent(
-          replyMessage
-        )}&access_token=${accessToken}`,
-        { method: "POST" }
-      );
-      const data = await res.json();
-      // Log the reply sent response from the API to verify that the reply was successfully posted
-      // console.log("Reply sent:", data);
-      setReplyMessage("");
-      setReplyToCommentId(null);
-      await fetchComments();
-    } catch (error) {
-      console.error("Error sending reply:", error);
-    } finally {
-      setReplying(false);
-    }
   };
 
   return (

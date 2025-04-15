@@ -102,5 +102,55 @@ export const fetchUserProfileInformation = async (req, res) => {
       res.status(500).json({ error: "Failed to fetch media" });
     }
   };
-  
-  
+
+export const fetchPostComments = async (req, res) => {
+  const { access_token, media_id } = req.query;
+
+  if (!access_token || !media_id) {
+    return res.status(400).json({ error: "Missing access_token or media_id" });
+  }
+
+  try {
+    const response = await axios.get(
+      `https://graph.instagram.com/${media_id}/comments`,
+      {
+        params: {
+          fields: "id,text,timestamp,like_count,from",
+          access_token,
+        },
+      }
+    );
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Error fetching comments:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to fetch comments" });
+  }
+};
+
+export const handleCommentReply = async (req, res) => {
+  const { access_token, comment_id, message } = req.body;
+
+  if (!access_token || !comment_id || !message) {
+    return res.status(400).json({ error: "Missing access_token, comment_id or message" });
+  }
+
+  try {
+    const response = await axios.post(
+      `https://graph.instagram.com/${comment_id}/replies`,
+      null,
+      {
+        params: {
+          message,
+          access_token,
+        },
+      }
+    );
+
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error("Error sending reply:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to send reply" });
+  }
+};
+
