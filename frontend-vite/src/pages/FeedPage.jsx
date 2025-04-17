@@ -35,7 +35,7 @@ const FeedPage = () => {
         const posts = res.data;
 
         // 🛠️ Debug: Log fetched media posts
-        console.log("MEDIA_POSTS:", posts);
+        // console.log("MEDIA_POSTS:", posts);
 
         setPosts(posts);
       })
