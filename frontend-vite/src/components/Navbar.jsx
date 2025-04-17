@@ -39,7 +39,7 @@ const Navbar = () => {
           to="/"
           className="text-xl font-bold text-white sm:text-sm md:text-xl"
         >
-          Meta Instagram App
+          Instadesk
         </Link>
 
         <div className="md:hidden">

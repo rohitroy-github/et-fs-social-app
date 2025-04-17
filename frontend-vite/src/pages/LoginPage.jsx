@@ -9,7 +9,7 @@ const LoginPage = () => {
         {/* Left Side */}
         <div className="flex-1 flex flex-col justify-center items-center text-center p-4">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-5">
-            Meta Instagram App
+            Instadesk
           </h1>
           <p className="text-white/80 text-base md:text-lg max-w-md">
             Seamlessly connect and interact with your Instagram business
