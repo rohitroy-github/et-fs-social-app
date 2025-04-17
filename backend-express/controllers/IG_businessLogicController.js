@@ -52,7 +52,7 @@ export const handleRedirect = async (req, res) => {
 
     // Redirect with access token, user_id, and username in URL
     res.redirect(
-      `http://localhost:5173/${username}/profile?access_token=${access_token}&user_id=${user_id}&user_name=${username}`
+      `https://instadesk.vercel.app/${username}/profile?access_token=${access_token}&user_id=${user_id}&user_name=${username}`
     );
   } catch (err) {
     console.error(
