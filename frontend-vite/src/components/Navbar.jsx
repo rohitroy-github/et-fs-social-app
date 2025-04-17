@@ -31,18 +31,22 @@ const Navbar = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   return (
-    <div className="w-full max-w-5/6 mt-5 mx-auto px-4 sm:px-6 lg:px-8 font-montserrat z-50 relative">
-
+    <div className="container md:max-w-8xl lg:max-w-8xl mb-10 mt-8 mx-auto font-montserrat z-50 relative top-0 ">
       <div className="absolute inset-0 opacity-20 z-0"></div>
 
       <div className="bg-white/30 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg z-10 w-full flex justify-between items-center px-6 py-4">
-      <Link to="/" className="text-xl font-bold text-white sm:text-sm md:text-xl">
-  Meta Instagram App
-</Link>
-
+        <Link
+          to="/"
+          className="text-xl font-bold text-white sm:text-sm md:text-xl"
+        >
+          Meta Instagram App
+        </Link>
 
         <div className="md:hidden">
-          <button onClick={toggleMobileMenu} className="text-white focus:outline-none">
+          <button
+            onClick={toggleMobileMenu}
+            className="text-white focus:outline-none"
+          >
             {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
@@ -53,10 +57,16 @@ const Navbar = () => {
           ) : (
             <>
               <div className="flex gap-6">
-                <Link to={`/${username}/feed`} className="text-white text-lg font-semibold">
+                <Link
+                  to={`/${username}/feed`}
+                  className="text-white text-lg font-semibold"
+                >
                   Feed
                 </Link>
-                <Link to={`/${username}/profile`} className="text-white text-lg font-semibold">
+                <Link
+                  to={`/${username}/profile`}
+                  className="text-white text-lg font-semibold"
+                >
                   Profile
                 </Link>
               </div>
@@ -81,10 +91,18 @@ const Navbar = () => {
             <InstagramConnectButton variant="navbar" />
           ) : (
             <>
-              <Link to={`/${username}/feed`} className="text-white text-base font-semibold" onClick={toggleMobileMenu}>
+              <Link
+                to={`/${username}/feed`}
+                className="text-white text-base font-semibold"
+                onClick={toggleMobileMenu}
+              >
                 Feed
               </Link>
-              <Link to={`/${username}/profile`} className="text-white text-base font-semibold" onClick={toggleMobileMenu}>
+              <Link
+                to={`/${username}/profile`}
+                className="text-white text-base font-semibold"
+                onClick={toggleMobileMenu}
+              >
                 Profile
               </Link>
               <p className="text-white text-base font-semibold">@{username}</p>

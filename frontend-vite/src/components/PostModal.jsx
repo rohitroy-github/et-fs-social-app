@@ -44,7 +44,7 @@ const PostModal = ({ media, onClose }) => {
 
       // Send the reply to the comment and log the response for debugging
       // The data contains the response from the Instagram API, confirming the reply was successfully posted.
-      // console.log("FETCHED_COMMENTS:", data);
+      console.log("FETCHED_COMMENTS:", data);
 
       setComments(data.data || []);
     } catch (error) {
@@ -71,7 +71,7 @@ const PostModal = ({ media, onClose }) => {
       );
 
       // Log the reply sent response from the API to verify that the reply was successfully posted
-      console.log("Reply sent:", res.data);
+      // console.log("Reply sent:", res.data);
 
       setReplyMessage("");
       setReplyToCommentId(null);
@@ -108,19 +108,20 @@ const PostModal = ({ media, onClose }) => {
         <div className="w-full md:w-1/2 relative justify-between items-center flex">
           {isCarousel && (
             <>
-              <button
-                onClick={handlePrev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 text-white p-2 rounded-full hover:bg-white/30 transition"
-              >
-                ◀
-              </button>
-              <button
-                onClick={handleNext}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 text-white p-2 rounded-full hover:bg-white/30 transition"
-              >
-                ▶
-              </button>
-            </>
+  <button
+    onClick={handlePrev}
+    className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
+  >
+    ◀
+  </button>
+  <button
+    onClick={handleNext}
+    className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
+  >
+    ▶
+  </button>
+</>
+
           )}
           <img
             src={currentItem.media_url}

@@ -112,7 +112,7 @@ export const fetchPostComments = async (req, res) => {
 
   try {
     const response = await axios.get(
-      `https://graph.instagram.com/${media_id}/comments`,
+      `https://graph.instagram.com/v22.0/${media_id}/comments`,
       {
         params: {
           fields: "id,text,timestamp,like_count,from",
