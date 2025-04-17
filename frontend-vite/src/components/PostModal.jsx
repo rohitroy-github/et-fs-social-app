@@ -35,7 +35,7 @@ const PostModal = ({ media, onClose }) => {
         {
           params: {
             access_token: accessToken,
-            media_id: currentItem.id,
+            media_id: media.id,
           },
         }
       );
