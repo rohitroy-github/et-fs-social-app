@@ -108,31 +108,40 @@ const PostModal = ({ media, onClose }) => {
         <div className="w-full md:w-1/2 relative justify-between items-center flex">
           {isCarousel && (
             <>
-  <button
-    onClick={handlePrev}
-    className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
-  >
-    ◀
-  </button>
-  <button
-    onClick={handleNext}
-    className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
-  >
-    ▶
-  </button>
-</>
-
+              <button
+                onClick={handlePrev}
+                className="absolute left-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
+              >
+                ◀
+              </button>
+              <button
+                onClick={handleNext}
+                className="absolute right-5 top-1/2 -translate-y-1/2 bg-white/20 text-white w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/30 transition"
+              >
+                ▶
+              </button>
+            </>
           )}
-          <img
-            src={currentItem.media_url}
-            alt="Post"
-            className="object-contain max-h-[70vh] rounded-lg w-full"
-          />
+
+          {/* Check for reels/videos */}
+          {currentItem.media_type === "VIDEO" ? (
+            <video
+              controls
+              src={currentItem.media_url}
+              className="object-contain max-h-[70vh] rounded-lg w-full"
+            />
+          ) : (
+            <img
+              src={currentItem.media_url}
+              alt="Post"
+              className="object-contain max-h-[70vh] rounded-lg w-full"
+            />
+          )}
         </div>
 
         {/* Right Side: Comments */}
         <div className="w-full md:w-1/2 max-h-[70vh] overflow-y-auto px-2 flex flex-col justify-start items-start no-scrollbar">
-        <h2 className="text-white text-xl font-semibold mb-4">Comments</h2>
+          <h2 className="text-white text-xl font-semibold mb-4">Comments</h2>
           {loadingComments ? (
             <p className="text-gray-300 text-center font-semibold">
               Loading your comments

@@ -79,13 +79,12 @@ const ProfilePage = () => {
         </h1>
 
         {profilePic && (
-  <img
-    src={profilePic}
-    alt="Profile"
-    className="w-28 h-28 rounded-full border-4 border-white shadow-lg sm:w-24 sm:h-24 xs:w-20 xs:h-20 transition-transform duration-300 hover:scale-105"
-  />
-)}
-
+          <img
+            src={profilePic}
+            alt="Profile"
+            className="w-28 h-28 rounded-full border-4 border-white shadow-lg sm:w-24 sm:h-24 xs:w-20 xs:h-20 transition-transform duration-300 hover:scale-105"
+          />
+        )}
 
         <p className="text-lg font-semibold bg-white/20 border border-white/30 px-4 py-2 rounded-full shadow-inner sm:text-base xs:text-sm">
           @{username}

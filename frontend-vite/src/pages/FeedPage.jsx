@@ -13,39 +13,39 @@ const FeedPage = () => {
     fetchPosts();
   }, []);
 
-const fetchPosts = async () => {
-  const accessToken = sessionStorage.getItem("access_token");
-  const userId = sessionStorage.getItem("user_id");
+  const fetchPosts = async () => {
+    const accessToken = sessionStorage.getItem("access_token");
+    const userId = sessionStorage.getItem("user_id");
 
-  if (!accessToken || !userId) {
-    window.location.href = "/profile";
-    return;
-  }
+    if (!accessToken || !userId) {
+      window.location.href = "/profile";
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  axios
-  .get(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/posts`, {
-    params: {
-        access_token: accessToken,
-        user_id: userId,
-      },
-    })
-    .then((res) => {
-      const posts = res.data;
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/posts`, {
+        params: {
+          access_token: accessToken,
+          user_id: userId,
+        },
+      })
+      .then((res) => {
+        const posts = res.data;
 
-      // 🛠️ Debug: Log fetched media posts
-      console.log("MEDIA_POSTS:", posts);
+        // 🛠️ Debug: Log fetched media posts
+        console.log("MEDIA_POSTS:", posts);
 
-      setPosts(posts); 
-    })
-    .catch((err) => {
-      console.error("❌ Failed to fetch media posts", err);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-};
+        setPosts(posts);
+      })
+      .catch((err) => {
+        console.error("❌ Failed to fetch media posts", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const handleCardClick = (media) => {
     setSelectedPost(media);
