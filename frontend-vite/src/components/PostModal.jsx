@@ -131,8 +131,8 @@ const PostModal = ({ media, onClose }) => {
         </div>
 
         {/* Right Side: Comments */}
-        <div className="w-full md:w-1/2 max-h-[70vh] overflow-y-auto px-2 flex flex-col justify-start items-start">
-          <h2 className="text-white text-xl font-semibold mb-4">Comments</h2>
+        <div className="w-full md:w-1/2 max-h-[70vh] overflow-y-auto px-2 flex flex-col justify-start items-start no-scrollbar">
+        <h2 className="text-white text-xl font-semibold mb-4">Comments</h2>
           {loadingComments ? (
             <p className="text-gray-300 text-center font-semibold">
               Loading your comments
